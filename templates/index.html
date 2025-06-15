@@ -1,0 +1,58 @@
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('https://thumbs.dreamstime.com/b/detailed-earth-spain-mediterranean-sea-moonlit-nig-night-planet-precise-relief-city-lights-illuminated-62934709.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>انگشتر جعفری</h1>
+            <span class="subheading">ANGOSHTAR JAFARI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-10"> <!-- optional wider container -->
+      <div class="row"> <!-- inner row for posts -->
+        {% for post in all_posts %}
+        <div class="col-lg-4 col-md-6 mb-4"> <!-- 3 per row on large, 2 on medium -->
+          <div class="post-preview">
+            <a href="{{ url_for('show_post', post_id=post.id) }}">
+              <img class="img-fluid im" src="{{ post.img_url }}" alt="Post Image">
+<!--              <h2 class="mt-3">{{ post.model }}</h2>-->
+
+              <p class="mt-3"> {{ post.price }}  </p>
+
+            </a>
+            <p>
+              {% if current_user.id == 1 %}
+              <a href="{{ url_for('delete_post', post_id=post.id) }}">delete ✘</a>
+              {% endif %}
+            </p>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+        <!-- New Post -->
+        {% if current_user.id == 1: %}
+        <div class="clearfix" style="display: flex; justify-content: center;">
+          <a class="btn btn-primary float-right" href="{{ url_for('add_new_post') }}">Create New Post</a>
+        </div>
+        {% endif %}
+
+  <hr>
+
+{% include "footer.html" %}

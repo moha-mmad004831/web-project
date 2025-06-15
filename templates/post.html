@@ -1,0 +1,128 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+<!-- Page Header -->
+
+
+<header class="masthead" style= "background-image: url('{{post.img_url}}')" >
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 col-md-10 mx-auto">
+
+                <div dir="rtl" style="text-align: right;">
+                    <div class="col-lg-6 col-md-6 mb-12 px-2 mb-4">
+                    <div class="card">
+            <div class="card-header py-3">
+                <h3 class="my-0 fw-normal">قیمت به تومان</h3>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">{{ post.price }}</h2>
+            </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mb-12 px-2 mb-4">
+                    <div class="card">
+            <div class="card-header py-3">
+                <h3 class="my-0 fw-normal">مدل</h3>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">{{ post.model }}</h2>
+            </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mb-12 px-2 mb-4">
+                    <div class="card">
+            <div class="card-header py-3">
+                <h3 class="my-0 fw-normal">سنگ</h3>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">{{ post.stone }}</h2>
+            </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 mb-12 px-2 mb-4">
+                    <div class="card">
+            <div class="card-header py-3">
+                <h3 class="my-0 fw-normal">نوع</h3>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">{{ post.sort }}</h2>
+            </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 mb-12 px-2">
+                    <div class="card">
+            <div class="card-header py-3">
+                <h3 class="my-0 fw-normal">توضیحات تکمیلی</h3>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">{{ post.description | safe }}</h2>
+            </div>
+                    </div>
+                    </div>
+
+
+            <!-- Edit Post Button -->
+                {% if current_user.id == 1 %}
+                <div class="clearfix">
+                    <div class="text-center">
+                       <a class="btn btn-primary mt-4" href="{{ url_for('edit_post', post_id=post.id) }}">Edit Post</a>
+                    </div>
+                </div>
+                {% endif %}
+
+
+                <!--           Comments Area -->
+
+
+                {{ ckeditor.load() }}
+                {{ ckeditor.config(name='comment_text') }}
+                {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+
+                <div class="col-lg-8 col-md-10 mx-auto comment">
+                    {% for comment in post.comments: %}
+                    <ul class="commentList">
+                        <li>
+                            <div class="commenterImage">
+                                <img src="{{ comment.comment_author.email | gravatar }}"/>
+                            </div>
+                            <div class="commentText">
+                                {{comment.text|safe}}
+                                <span class="date sub-text">{{comment.comment_author.name}}</span>
+
+                            </div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+{% include "footer.html" %}
+{% endblock %}
